@@ -8,7 +8,6 @@
 export default {
   name: "component-calculator-button",
   props: {
-    eventFunc: Function,
     type: String,
     showText: String,
     value: null,
@@ -22,7 +21,7 @@ export default {
       return this.$props.type;
     },
     handleButton() {
-      this.$props.eventFunc(this.$props.value);
+      this.$emit("handlebutton", this.$props.value);
     }
   }
 };

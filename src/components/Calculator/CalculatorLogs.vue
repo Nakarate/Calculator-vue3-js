@@ -3,7 +3,7 @@
     <div class="calculatorlog-template">
       <div class="calculatorlog-filter">
         <div class="calculatorlog-text">{{ "Results" }}</div>
-        <div>
+
           <input
             type="text"
             v-model="query"
@@ -11,33 +11,32 @@
             class="calculatorlog-input"
             placeholder="Search by result, date"
           />
-        </div>
-        <div>
+    
           <select class="round" v-model="selected">
             <option value="">All</option>
             <option value="Calculator A">A</option>
             <option value="Calculator B">B</option>
           </select>
-        </div>
+    
       </div>
       <div class="calculatorlog-card">
         <div>
           <div
             class="calculatorlog-template"
-            v-for="(history, index) in filterData"
+            v-for="(logs, index) in filterData"
             :key="index"
           >
             <div class="calculatorlog-container">
-              <span>{{ history.calculatorName }}</span>
-              <span class="calculatorlog-date">{{ history.dateTime }}</span>
+              <span id="name">{{ logs.calculatorName }}</span>
+              <span id="dateTime" class="calculatorlog-date">{{ logs.dateTime }}</span>
             </div>
             <div>
-              <span class="calculator-result">{{ history.result }}</span>
+              <span id="result" class="calculator-result">{{ logs.result }}</span>
               <hr />
               <span
+                id="formula"
                 class="calculator-formula"
-                v-html="formatFormulaToDisplay(history.formula)"
-              ></span>
+              >{{logs.formula}}</span>
             </div>
           </div>
         </div>
@@ -55,7 +54,7 @@ import { mapState, mapActions } from "vuex";
 
 export default {
   mounted() {
-    if (this.initLocalStorge()) this.searchLogByResultOrTime();
+    this.searchLogByResultOrTime();
   },
   data() {
     return {
@@ -64,16 +63,8 @@ export default {
     };
   },
   methods: {
-    formatFormulaToDisplay(data) {
-      let value = data;
-      value = value.replaceAll("+", "<span style='color:#E623CF;'> + </span>");
-      value = value.replaceAll("-", "<span style='color:#E623CF;'> - </span>");
-      value = value.replaceAll("x", "<span style='color:#E623CF;'> x </span>");
-      return value;
-    },
     ...mapActions([
       "clearLogInLocalStorage",
-      "initLocalStorge",
       "searchLogByResultOrTime",
       "filterLogByCalculatorName"
     ]),

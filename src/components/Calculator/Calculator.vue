@@ -2,121 +2,114 @@
   <div class="calculator">
     <div class="calculator-name">{{ name }}</div>
     <div class="calculator-card">
-      <div>
-        <div class="calculator-result">{{ result }}</div>
-        <hr />
-        <div class="calculator-formula">
-          <span v-html="displayFormula"></span>
-        </div>
-      </div>
-
+      <calc-result :formula="formula" :result="result"/>
       <div class="calculator-button-template">
         <calc-button
-          :eventFunc="clear"
+          @handlebutton="clear"
           :type="'calculator-button'"
           :showText="'C'"
           :id="'clear'"
         />
         <calc-button
-          :eventFunc="addOperator"
+          @handlebutton="addOperator"
           :type="'calculator-button'"
           :showText="'x'"
           :value="'x'"
           :id="'mul'"
         />
         <calc-button
-          :eventFunc="addOperator"
+          @handlebutton="addOperator"
           :type="'calculator-button'"
           :showText="'-'"
           :value="'-'"
           :id="'sub'"
         />
         <calc-button
-          :eventFunc="addOperator"
+          @handlebutton="addOperator"
           :type="'calculator-button plus'"
           :showText="'+'"
           :value="'+'"
           :id="'add'"
         />
         <calc-button
-          :eventFunc="addOperand"
+          @handlebutton="addOperand"
           :type="'calculator-button'"
           :showText="'7'"
           :value="7"
           :id="'seven'"
         />
         <calc-button
-          :eventFunc="addOperand"
+          @handlebutton="addOperand"
           :type="'calculator-button'"
           :showText="'8'"
           :value="8"
           :id="'eight'"
         />
         <calc-button
-          :eventFunc="addOperand"
+          @handlebutton="addOperand"
           :type="'calculator-button'"
           :showText="'9'"
           :value="9"
           :id="'nine'"
         />
         <calc-button
-          :eventFunc="addOperand"
+          @handlebutton="addOperand"
           :type="'calculator-button'"
           :showText="'4'"
           :value="4"
           :id="'four'"
         />
         <calc-button
-          :eventFunc="addOperand"
+          @handlebutton="addOperand"
           :type="'calculator-button'"
           :showText="'5'"
           :value="5"
           :id="'five'"
         />
         <calc-button
-          :eventFunc="addOperand"
+          @handlebutton="addOperand"
           :type="'calculator-button'"
           :showText="'6'"
           :value="6"
           :id="'six'"
         />
         <calc-button
-          :eventFunc="equal"
+          @handlebutton="equal"
           :type="'calculator-button equal'"
           :showText="'='"
           :value="'='"
           :id="'equal'"
         />
         <calc-button
-          :eventFunc="addOperand"
+          @handlebutton="addOperand"
           :type="'calculator-button'"
           :showText="'1'"
           :value="1"
           :id="'one'"
         />
         <calc-button
-          :eventFunc="addOperand"
+          @handlebutton="addOperand"
           :type="'calculator-button'"
           :showText="'2'"
           :value="2"
           :id="'two'"
         />
         <calc-button
-          :eventFunc="addOperand"
+          @handlebutton="addOperand"
           :type="'calculator-button'"
           :showText="'3'"
           :value="3"
           :id="'three'"
         />
         <calc-button
-          :eventFunc="addOperand"
+          @handlebutton="addOperand"
           :type="'calculator-button zero'"
           :showText="'0'"
           :value="0"
           :id="'zero'"
         />
         <calc-button
-          :eventFunc="addDot"
+          @handlebutton="addDot"
           :type="'calculator-button'"
           :showText="'.'"
           :value="'.'"
@@ -129,12 +122,15 @@
 
 <script>
 import CalcButton from "./CalculatorButton";
-import { mapState, mapActions } from "vuex";
+import CalcResult from "./CalculatorResult";
+import { mapActions } from "vuex";
+import getResult from '@/services/service.js'
 
 export default {
   name: "component-calculator-button",
   components: {
-    CalcButton
+    CalcButton,
+    CalcResult
   },
   props: {
     name: String
@@ -145,18 +141,6 @@ export default {
       operatorlist: ["+", "-", "x", "/"],
       result: 0
     };
-  },
-  computed: {
-    ...mapState(["results"]),
-    displayFormula: {
-      get() {
-        let value = this.formula;
-        value = value.replaceAll( "+", "<span style='color:#E623CF;'> + </span>" );
-        value = value.replaceAll( "-", "<span style='color:#E623CF;'> - </span>" );
-        value = value.replaceAll( "x", "<span style='color:#E623CF;'> x </span>" );
-        return value;
-      }
-    }
   },
   methods: {
     ...mapActions(["setDataLocalStorage"]),
@@ -194,16 +178,21 @@ export default {
       if (this.formula === "") {
         return;
       }
+      if (this.formula.slice(-1) === '.') {
+        return;
+      }
       if (this.formula.charAt(0) === "x") {
         this.formula = "";
         return;
       }
+
       let params = this.formula;
       params = params.replaceAll("+", "%2B");
       params = params.replaceAll("-", "%2D");
       params = params.replaceAll("x", "%2A");
-      const data = await fetch(`http://api.mathjs.org/v4/?expr=${params}`);
-      this.result = await data.json();
+
+      this.result = await getResult(params)
+      
       let date = new Date();
       let dateFormat = `${(date.getMonth() + 1)
         .toString()

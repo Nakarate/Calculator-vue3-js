@@ -7,30 +7,17 @@ const CLEAR = "CLEAR";
 export default createStore({
   namespaced: true,
   state: {
-    results: [],
     filterData: []
   },
   mutations: {
-    [RESULTS](state, payload) {
-      state.results = payload;
-    },
     [FILTER](state, payload) {
       state.filterData = payload;
     },
     [CLEAR](state) {
-      state.results = [];
       state.filterData = [];
     }
   },
   actions: {
-    initLocalStorge({ commit }) {
-      let existing = JSON.parse(localStorage.getItem("logLists") || "[]");
-      if (existing) {
-        commit(RESULTS, existing);
-        return true;
-      }
-      return false;
-    },
     setDataLocalStorage({ commit }, result) {
       let existing = JSON.parse(localStorage.getItem("logLists") || "[]");
       let added;
@@ -55,7 +42,6 @@ export default createStore({
       } else commit(FILTER, existing);
     },
     filterLogByCalculatorName({ commit }, value) {
-      console.log(value);
       let existing = JSON.parse(localStorage.getItem("logLists") || "[]");
       if (existing && value.selected !== "" && value.query !== "") {
         const filterData = existing.filter(result => {
