@@ -1,7 +1,10 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import store from "./store";
+import "./assets/sass/style.scss";
+import DialogBox from "./components/Modal/DialogBox.vue";
 
-createApp(App)
-  .use(store)
-  .mount("#app");
+const app = createApp(App);
+app.use(store);
+app.component("DialogBox", DialogBox);
+app.mount("#app");
