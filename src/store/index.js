@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 
-const RESULTS = "RESULTS";
+// const RESULTS = "RESULTS";
 const FILTER = "FILTER";
 const CLEAR = "CLEAR";
 
@@ -25,7 +25,7 @@ export default createStore({
       else added = [result];
 
       localStorage.setItem("logLists", JSON.stringify(added));
-      commit(RESULTS, added);
+      // commit(RESULTS, added);
       commit(FILTER, added);
       return null;
     },

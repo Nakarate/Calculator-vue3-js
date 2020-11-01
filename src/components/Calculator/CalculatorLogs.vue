@@ -5,6 +5,7 @@
         <div class="calculatorlog-text">{{ "Results" }}</div>
 
           <input
+            id="query"
             type="text"
             v-model="query"
             v-on:input="search"

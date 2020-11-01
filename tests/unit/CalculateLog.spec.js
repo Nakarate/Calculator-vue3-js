@@ -11,7 +11,13 @@ describe("CalculatorLogs", () => {
                   calculatorName: "Calculator A",
                   result: 637.69,
                   formula: "55.69+582",
-                  dateTime: "06/10/2020 23:24.15"
+                  dateTime: "30/10/2020 - 23:25:19"
+                },
+                {
+                  calculatorName: "Calculator B",
+                  result: 40,
+                  formula: "8*5",
+                  dateTime: "01/11/2020 - 10:10:15"
                 }
               ]
           }
@@ -22,9 +28,10 @@ describe("CalculatorLogs", () => {
         plugins: [store]
     }});
 
-    expect(wrapper.find('#name').text()).toContain("Calculator A");
-    expect(wrapper.find('#result').text()).toContain("637.69");
-    expect(wrapper.find('#formula').text()).toContain("55.69+582");
-    expect(wrapper.find('#dateTime').text()).toContain("06/10/2020 23:24.15");
+    expect(wrapper.find('#name').text()).toBe("Calculator A");
+    expect(wrapper.find('#result').text()).toBe("637.69");
+    expect(wrapper.find('#formula').text()).toBe("55.69+582");
+    expect(wrapper.find('#dateTime').text()).toBe("30/10/2020 - 23:25:19");
   });
+
 });
