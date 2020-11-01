@@ -2,7 +2,7 @@
   <div class="calculator">
     <div class="calculatorlog-template">
       <div class="calculatorlog-filter">
-        <div class="calculatorlog-text">{{ "Results" }}</div>
+        <div class="calculatorlog-text">Results</div>
 
           <input
             id="query"
