@@ -187,9 +187,9 @@ export default {
       }
 
       let params = this.formula;
-      params = params.replaceAll("+", "%2B");
-      params = params.replaceAll("-", "%2D");
-      params = params.replaceAll("x", "%2A");
+      params = params.replace(/\+/g, "%2B");
+      params = params.replace(/-/g, "%2D");
+      params = params.replace(/x/g, "%2A");
 
       this.result = await getResult(params)
       
